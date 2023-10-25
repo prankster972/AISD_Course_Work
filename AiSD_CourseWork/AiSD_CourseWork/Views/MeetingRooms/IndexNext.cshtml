@@ -1,0 +1,75 @@
+﻿@model IEnumerable<AiSD_CourseWork.Models.MeetingRoom>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Meeting Room</h1>
+
+<p>
+    <a asp-action="Create" asp-route-id="@ViewBag.id">Create New</a>
+</p>
+<div class="col-4 p-0 justify-content-end">
+    <p>Filtering by participants</p>
+    <form asp-controller="MeetingRooms" asp-action="IndexNext">
+        <span class="btn-group">
+            <input class="form-control" type="text" name="Members" placeholder="Members" />
+            <br />
+            <input class="btn btn-outline-secondary" type="submit" value="Filter" />
+        </span>
+    </form>
+</div>
+<br />
+<a asp-action="Index" asp-route-id="@ViewBag.id" style="font:Arial; font-size:30px; text-align:left"> < </a>
+
+<table class="table">
+    <thead>
+        
+        <tr>
+            <th></th>
+            @for (int i = 7; i < 14; i++)
+            {
+                <th>
+                    @(DateTime.Now.Date.AddDays(i).DayOfWeek)
+                </th>
+            }
+        </tr>
+        <tr>
+            <th></th>
+            @for (int i = 7; i < 14; i++)
+            {
+                <th>
+                    @(DateTime.Now.AddDays(i).ToString("d"))
+                </th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < 24; i++)
+        {
+            <tr>
+                <th>
+                    @i:00
+                </th>
+                @for (int j = DateTime.Now.DayOfYear + 7; j < DateTime.Now.DayOfYear + 14; j++)
+                {
+                    <td style=" border:thin; border-left:groove; height:1px; padding:0px;">
+                        @foreach (var item in Model)
+                        {
+                            if (item.MeetingDate.DayOfYear == j && item.TimeFrom.Hours <= i && i <= item.TimeTo.Hours)
+                            {
+                                <div style="background-color: #0645AD; text-align:center; height:100%;">
+                                    @if (item.TimeFrom.Hours == i)
+                                    {
+                                        <a asp-action="Details" asp-route-id="@item.MeetingId" style="color: white; font-family: Arial;">@item.MeetingName</a>
+                                    }
+                                </div>
+                            }
+                        }
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
