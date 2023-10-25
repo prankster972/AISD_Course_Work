@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\AiSD_CourseWork.props" />
+</Project>
